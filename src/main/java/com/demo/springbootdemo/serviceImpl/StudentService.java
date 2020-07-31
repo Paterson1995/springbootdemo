@@ -6,12 +6,15 @@ import com.demo.springbootdemo.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StudentService implements IStudentService {
 
     @Autowired
     StudentMapper studentMapper;
 
+    @Override
     public int addStudent(Student student) {
 
         student.setRole("user");
@@ -23,5 +26,8 @@ public class StudentService implements IStudentService {
         return studentMapper.login(name, password);
     }
 
+    @Override
+    public <T extends Number> void test(List<T> dest, List<T> src) {
 
+    }
 }

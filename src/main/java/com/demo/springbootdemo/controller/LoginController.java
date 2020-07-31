@@ -31,8 +31,9 @@ public class LoginController {
             model.addAttribute("operation_message", "重新登录");
             model.addAttribute("link", "/");
         } else {
-            //登录成功后将用户放入session中，用于拦截
+            //登录成功后将用户放入session中，设置超时时间为60分钟，用于拦截
             request.getSession().setAttribute("session_user", s1);
+            request.getSession().setMaxInactiveInterval(60*60);
             model.addAttribute("message", "登录成功");
             model.addAttribute("operation_message", "退出登录");
             model.addAttribute("link","/logout");

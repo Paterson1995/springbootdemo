@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.springbootdemo.mapper.TestMapper">
+
+    <select id="exportExcel" parameterType="map" resultType="map">
+        select g.id,s.supplier_brand,
+        CONCAT(ifnull(g.goods_level,''),' ',ifnull(g.goods_CHstandard,''),' ',ifnull(g.goods_toothshape,''),'
+        ',ifnull(g.goods_surfacetreat,'')) goodsInfo,
+        g.goods_ENstandard,g.goods_toothshape,g.goods_norm,g.goods_surfacetreat,g.goods_level,
+        g.goods_isWeight,g.goods_oprice,c.costPrice,substring_index(g.goods_unit,'/',1)
+        baseunit,substring_index(substring_index(g.goods_unit,'/',2),'/',-1) smallpackageNorm,
+        g.goods_smallpackagenum,substring_index(g.goods_unit,'/',-1)
+        bigpackeageNorm,g.goods_bigpackeagenum,g.goods_thousandweight,g.goods_threadaccuracy,
+        g.goods_mechanicalproperties,g.goods_tolerance,g.goods_toothdistance,g.goods_materials,g.goods_receiveday,g.goods_length
+        from goods g
+        inner join warehouse_goods wg on g.id = wg.gId
+        inner join warehouse w on wg.wId = w.id and w.warehousetype=1
+        <if test="cId != null">and w.cId = #{cId}</if>
+        <if test="tId != null">inner join goodstype wt on g.tId = wt.id and g.tId = #{tId}</if>
+        left join supplier s on g.goods_brands = s.id
+        left join costprice c on g.id = c.gId
+        where g.usable=true and ( g.goods_length=0 or g.goods_length is null)
+    </select>
+
+</mapper>

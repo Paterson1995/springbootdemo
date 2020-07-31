@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Batch Upload</title>
+</head>
+<body>
+    <!--admin前面如果不加/默认是相对路径,MVC会自动加上页面请求的前缀，也就是相应controller类上的前缀-->
+    <form method="POST" enctype="multipart/form-data" action="/admin/batchUpload">
+        <p>文件1：<input type="text" name="id" /></p>
+        <p>文件2：<input type="text" name="name" /></p>
+        <p>文件3：<input type="file" name="file" /></p>
+        <p><input type="submit" value="上传" /></p>
+    </form>
+</body>
+</html>

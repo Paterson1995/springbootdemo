@@ -9,17 +9,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -41,18 +42,18 @@ public class TestController {
                 {"goods_mechanicalproperties", "机械性能"}, {"goods_tolerance", "公差"}, {"goods_toothdistance", "牙距"},
                 {"goods_materials", "材质"}, {"goods_receiveday", "到货天数"}, {"goods_length", "长度"}};
 
-        List<? extends Map<String, Object>> exportData = testMapper.exportExcel(jsonObject);
-        Map<String, Object> map = null;
-        for (int i = 0; i<exportData.size(); i++) {
-            map = exportData.get(i);
-            if ((Boolean) map.get("goods_isWeight") == true) {
-                map.put("goods_isWeight", "重量调价");
-            } else {
-                map.put("goods_isWeight", "整体调价");
-            }
-            map.put("xuhao", i);
-
-        }
+        List<Map<String, Object>> exportData = testMapper.exportExcel(jsonObject);
+//        Map<String, Object> map = null;
+//        for (int i = 0; i<exportData.size(); i++) {
+//            map = exportData.get(i);
+//            if ((Boolean) map.get("goods_isWeight") == true) {
+//                map.put("goods_isWeight", "重量调价");
+//            } else {
+//                map.put("goods_isWeight", "整体调价");
+//            }
+//            map.put("xuhao", i);
+//
+//        }
 
         String excelName = "商品列表导出管理_" + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()) + ".xlsx";
         // 下载文件路径
@@ -137,5 +138,35 @@ public class TestController {
             }
         }
         return new ResponseEntity<byte[]>(body, headers, HttpStatus.OK);
+    }
+
+    @RequestMapping("/decimal")
+    @ResponseBody
+    public void testDecimal(@RequestBody JSONObject params) {
+
+        BigDecimal bigDecimal = params.getBigDecimal("bd");
+        BigDecimal b = new BigDecimal(3);
+        BigDecimal c = b.add(bigDecimal).setScale(2);
+        System.out.println(c);
+    }
+
+    @RequestMapping("/stream")
+    @ResponseBody
+    public void testStream() {
+        Set<String> strings = new HashSet<>();
+        List<Integer> intList = Arrays.asList(6, 7, 3, 8, 1, 2, 9);
+        List<Integer> collect = intList.stream().filter(x -> x > 7).collect(Collectors.toList());
+        System.out.println(collect);
+
+        Optional<Integer> reduce = intList.stream().max(new Comparator<Integer>()
+        {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1.compareTo(o2);
+            }
+        }
+        );
+        System.out.println(reduce);
+
     }
 }
