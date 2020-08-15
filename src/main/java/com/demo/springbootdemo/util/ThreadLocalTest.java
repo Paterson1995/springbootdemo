@@ -1,5 +1,7 @@
 package com.demo.springbootdemo.util;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class ThreadLocalTest {
 
     ThreadLocal<Long> longLocal = new ThreadLocal<Long>();

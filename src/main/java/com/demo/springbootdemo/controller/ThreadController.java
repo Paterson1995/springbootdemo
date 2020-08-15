@@ -1,6 +1,5 @@
 package com.demo.springbootdemo.controller;
 
-import com.demo.springbootdemo.domain.MyThread;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
