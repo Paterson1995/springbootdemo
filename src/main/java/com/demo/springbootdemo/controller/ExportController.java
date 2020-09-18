@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
-public class TestController {
+public class ExportController {
 
     @Autowired
     private TestMapper testMapper;

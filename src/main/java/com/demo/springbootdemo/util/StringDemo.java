@@ -15,7 +15,8 @@ public class StringDemo {
         //println会对参数调用String.valueOf(),其参数为null时，会转换为"null",
         // 其底层调用的是toString()，该方法空对象调用时会报NullPointerException
         System.out.println(nullObject);
-        nullObject.toString();
+//        nullObject.toString();
+
     }
 
 }

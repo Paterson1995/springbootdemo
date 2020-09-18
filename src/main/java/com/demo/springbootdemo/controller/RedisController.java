@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/redis")
@@ -45,6 +48,24 @@ public class RedisController {
         return "before:" + before + "\n"+ "after:" + valueOperations.get(k1)+"---------"+valueOperations.get(k2);
     }
 
+    //使用redis的session管理。注意:当session中数据发生变化时必须将session中变化的数据同步到redis中
+    @RequestMapping("session/get")
+    public void getSession(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        List<String> list = (List<String>) request.getSession().getAttribute("list");
+        if(list==null){
+            list = new ArrayList<>();
+        }
+        list.add("xxxx");
+        request.getSession().setAttribute("list",list);//每次session变化都要同步session
+
+        response.getWriter().println("size: "+list.size());
+        response.getWriter().println("sessionid: "+request.getSession().getId());
+    }
+
+    @RequestMapping("session/clear")
+    public void clearSession(HttpServletRequest request){
+        request.getSession().invalidate();
+    }
 
 }

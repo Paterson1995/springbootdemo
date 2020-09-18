@@ -10,15 +10,13 @@ public class PhantomReferenceDemo {
         ReferenceQueue<Object> referenceQueue = new ReferenceQueue<>();
         //软引用和弱引用也可以通过这种方式添加到引用队列中
         PhantomReference phantomReference = new PhantomReference(o1, referenceQueue);
-        System.out.println(o1);
         System.out.println(phantomReference.get());
         System.out.println(referenceQueue.poll());
 
-        System.out.println("===========");
+        System.out.println("===========GC后");
 
         o1 = null;
         System.gc();
-        System.out.println(o1);
         System.out.println(phantomReference.get());
         System.out.println(referenceQueue.poll());
     }

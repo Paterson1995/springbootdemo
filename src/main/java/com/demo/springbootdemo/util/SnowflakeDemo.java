@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.IdUtil;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,7 +14,7 @@ import java.util.concurrent.Executors;
 @Component
 public class SnowflakeDemo {
 
-    Logger logger;
+    Logger logger = LoggerFactory.getLogger(SnowflakeDemo.class);
 
     private long workId = 0;
     private long datecenterId = 1;
