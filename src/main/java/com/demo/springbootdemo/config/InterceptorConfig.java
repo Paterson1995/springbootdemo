@@ -11,13 +11,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
-//    @Autowired
-//    private LoginInterceptor loginInterceptor;
-
-//    @Bean
-//    public LoginInterceptor loginInterceptor() {
-//        return new LoginInterceptor();
-//    }
+    @Autowired
+    private LoginInterceptor loginInterceptor;
 
     // 这个方法是用来配置静态资源的，比如html，js，css，等等
     @Override
@@ -27,7 +22,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //(/**表示当前目录以及所有子目录（递归），/*表示当前目录，不包括子目录。)
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/login", "/register", "/", "/toRegister","/admin/**");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/**")
+                .excludePathPatterns("/login", "/register", "/", "/toRegister");
     }
 }

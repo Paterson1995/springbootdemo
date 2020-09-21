@@ -1,6 +1,5 @@
 package com.demo.springbootdemo.aspect;
 
-import com.demo.springbootdemo.domain.Student;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -12,22 +11,27 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Component
 @Aspect
-public class TestAspect {
+public class MyAspect {
 
-    private Logger logger = LoggerFactory.getLogger(TestAspect.class);
+    private Logger logger = LoggerFactory.getLogger(MyAspect.class);
 
-    @Pointcut("execution(public * com.demo.springbootdemo.controller.TestController.index*(..))")
+    /**
+     * execution()是最常用的切点函数，整个表达式可以分为五个部分：
+     * public：方法修饰符的的类型，可选
+     * 第一个*号：表示返回类型，*号表示所有的类型
+     * com.demo.springbootdemo.service..:包名，后面的..表示当前包和当前包的所有子包
+     * 第二个*号：表示类名，*号表示所有的类。
+     * *(..):最后这个星号表示方法名，*号表示所有的方法，后面括弧里面表示方法的参数，两个句点表示任何参数。
+     */
+    @Pointcut("execution(public * com.demo.springbootdemo.service..*.*(..))")
     public void pc(){
-
     }
 
-
-    @Before("execution(public * com.demo.springbootdemo.controller.TestController.index*(..))&&args(name,..)")
+//    @Before("execution(public * com.demo.springbootdemo.service..*.*(..))&&args(name,..)")
     public void before(JoinPoint joinPoint, String name){
 
         logger.info("*****************************前置切面");
@@ -58,24 +62,20 @@ public class TestAspect {
             logger.info("请求参数："+parameterMap.toString());
         }
 
-        //获取Session信息
-        HttpSession session = (HttpSession) requestAttributes.resolveReference(RequestAttributes.REFERENCE_SESSION);
-        logger.info("当前用户名:"+((Student)session.getAttribute("session_user")).getName());
     }
 
-    @After("pc()")
+//    @After("pc()")
     public void after(){
-
         logger.info("*****************************后置切面");
     }
 
-    @AfterReturning(pointcut = "execution(public * com.demo.springbootdemo.controller.TestController.index(..))", returning="s")
+//    @AfterReturning(pointcut = "execution(public * com.demo.springbootdemo.controller.TestController.index(..))", returning="s")
     public void afterReturning(String s) {
 
         logger.info("afterReturning={}", s);
     }
 
-    @AfterThrowing(pointcut = "execution(public * com.demo.springbootdemo.controller.TestController.index(..))", throwing = "exception")
+//    @AfterThrowing(pointcut = "execution(public * com.demo.springbootdemo.controller.TestController.index(..))", throwing = "exception")
     public void doAfterThrowingAdvice(Throwable exception) {
 
         if (exception instanceof NullPointerException) {
@@ -88,7 +88,7 @@ public class TestAspect {
     // 在通知体内调用ProceedingJoinPoint的proceed()方法会导致后台的连接点方法执行。
     // proceed()方法也可能会被调用并且传入一个Object[]对象，该数组中的值将被作为方法执行时的入参。
     //必须有返回值，也是目标方法的返回值
-    @Around("execution(public * com.demo.springbootdemo.controller.TestController.index2(..))")
+//    @Around("pc()")
     public Object around(ProceedingJoinPoint proceedingJoinPoint) {
 
         logger.info("****************************相当于before");

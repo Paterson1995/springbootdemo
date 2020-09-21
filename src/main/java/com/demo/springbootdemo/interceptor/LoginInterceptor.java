@@ -18,21 +18,23 @@ public class LoginInterceptor implements HandlerInterceptor {
     //第三个参数为响应的处理器
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
 
-
-        Student student = (Student) request.getSession().getAttribute("session_user");
-        if (student==null){
-            //拦截后跳转的方法
-            response.sendRedirect(request.getContextPath()+"/");
-            return false;
-        }
+        System.out.println("==================================================preHandle");
+//        Student student = (Student) request.getSession().getAttribute("session_user");
+//        if (student==null){
+//            //拦截后跳转的方法
+//            response.sendRedirect(request.getContextPath()+"/");
+//            return false;
+//        }
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+        System.out.println("==================================================postHandle");
     }
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+        System.out.println("==================================================afterCompletion");
     }
 }

@@ -1,4 +1,4 @@
-package com.demo.springbootdemo.serviceImpl;
+package com.demo.springbootdemo.service.serviceImpl;
 
 import com.demo.springbootdemo.domain.Student;
 import com.demo.springbootdemo.mapper.StudentMapper;

@@ -3,16 +3,18 @@ package com.demo.spring;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 
 public class Test {
     public static void main(String[] args) {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("spring-config.xml");
+//        ApplicationContext ac = new ClassPathXmlApplicationContext("spring-config.xml");
+        ApplicationContext ac = new AnnotationConfigApplicationContext(SpringConfig.class);
 
-        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("spring-config.xml"));
-        System.out.println("************************************************");
-        PersonService personService = (PersonService) beanFactory.getBean("personService");
+//        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("spring-config.xml"));
+//        System.out.println("************************************************");
+//        PersonService personService = (PersonService) beanFactory.getBean("personService");
         /**
          * 第一步，实例化bean
          * 第二步，调用set方法
