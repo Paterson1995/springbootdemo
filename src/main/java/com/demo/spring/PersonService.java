@@ -2,9 +2,18 @@ package com.demo.spring;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -16,22 +25,23 @@ import javax.annotation.PreDestroy;
  */
 @Component
 public class PersonService implements BeanNameAware,BeanFactoryAware,ApplicationContextAware,InitializingBean,DisposableBean{
+
     private String name;
 
     public String getName() {
         return name;
     }
 
+    @Value("qqq")
     public void setName(String name) {
         this.name = name;
-        System.out.println("第二步，调用set方法");
+        System.out.println("第二步，填充属性。调用set方法，name="+name);
     }
-    public void sayHi(){
-        System.out.println("第十步，hi"+ name);
-    }
+
     public PersonService(){
         System.out.println("第一步，实例化bean");
     }
+
     @Override
     public void setBeanName(String arg0){
         //该方法可以给出正在被调用的bean的id
@@ -55,9 +65,8 @@ public class PersonService implements BeanNameAware,BeanFactoryAware,Application
         System.out.println("第七步，调用afterPropertiesSet()方法");
     }
 
-//    @PostConstruct
-    public void init(){
-        System.out.println("第八步，调用我自己的init()方法");
+    public void myInit(){
+        System.out.println("第八步，调用我自己的初始化方法");
     }
 
     @Override
@@ -67,9 +76,8 @@ public class PersonService implements BeanNameAware,BeanFactoryAware,Application
         System.out.println("第十步，销毁方法（但不建议使用这种方式释放资源）");
     }
 
-//    @PreDestroy
-    public void destory(){
+    public void myDestroy(){
         //也看不到
-        System.out.println("销毁");
+        System.out.println("第十一步，调用自定义的销毁方法");
     }
 }

@@ -10,7 +10,35 @@ import org.springframework.core.io.ClassPathResource;
 public class Test {
     public static void main(String[] args) {
 //        ApplicationContext ac = new ClassPathXmlApplicationContext("spring-config.xml");
+
+        /**
+         * 1.this():调用父类构造器初始化了BeanFactory。将Spring默认的一些后置处理器(ConfigurationClassPostProcessor,
+         * AutowiredAnnotationBeanPostProcessor,CommonAnnotationBeanPostProcessor)注册到容器
+         * 2.this.register(annotatedClasses):将配置类解析为BeanDefinition，放入beanDefinitionMap，即注册到容器
+         * 3.this.refresh()：
+         *      1) invokeBeanFactoryPostProcessors(beanFactory):执行所有的BeanFactory后置处理器，包括spring内置的和自定义的。
+         *      会先执行实现了BeanDefinitionRegistryPostProcessor接口的类，然后执行BeanFactoryPostProcessor的类
+         *      默认情况下，容器中只有一个BeanFactoryPostProcessor,即Spring内置的ConfigurationClassPostProcessor
+         *      ConfigurationClassPostProcessor类的postProcessorBeanFactory()方法进行了
+         *      @Configuration类的解析，@ComponentScan的扫描，以及@Import注解的处理，向容器中添加了ImportAwareBeanPostProcessor
+         *      并将所有交由spring管理的类解析为BeanDefinition，放入到beanFactory的beanDefinitionMap中
+         *      2）registerBeanPostProcessors(beanFactory)：在beanDefinitionMap中找到所有的BeanPostProcessor的BeanDefinition，调用了getBean()方法，
+         *      将所有的BeanPostProcessor实例化，并放入到BeanFactory的beanPostProcessors的列表中。
+         *      最后再重新注册了ApplicationListenerDetector，这样做的目的是为了将ApplicationListenerDetector放入到后置处理器的最末端
+         *      3）finishBeanFactoryInitialization(beanFactory):实例化和初始化剩余的非懒加载的单例bean
+         */
         ApplicationContext ac = new AnnotationConfigApplicationContext(SpringConfig.class);
+        String[] names = ac.getBeanDefinitionNames();
+        for (String name: names) {
+            System.out.println(name);
+        }
+
+//        System.out.println(ac.getBean("personService"));
+//        System.out.println(ac.getBean("personService"));
+//
+//        SSSSSService sssssService = (SSSSSService) ac.getBean("SSSSSService");
+//        System.out.println(sssssService.personService());
+//        System.out.println(sssssService.personService());
 
 //        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("spring-config.xml"));
 //        System.out.println("************************************************");
