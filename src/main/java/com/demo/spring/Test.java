@@ -1,11 +1,8 @@
 package com.demo.spring;
 
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
+import com.demo.spring.mapper.OrderMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.ClassPathResource;
 
 public class Test {
     public static void main(String[] args) {
@@ -13,7 +10,8 @@ public class Test {
 
         /**
          * 1.this():调用父类构造器初始化了BeanFactory。将Spring默认的一些后置处理器(ConfigurationClassPostProcessor,
-         * AutowiredAnnotationBeanPostProcessor,CommonAnnotationBeanPostProcessor)注册到容器
+         * AutowiredAnnotationBeanPostProcessor(处理@Autowired，@Value，@Inject),
+         * CommonAnnotationBeanPostProcessor(@Resource、@PostConstruct、@PreDestroy))注册到容器
          * 2.this.register(annotatedClasses):将配置类解析为BeanDefinition，放入beanDefinitionMap，即注册到容器
          * 3.this.refresh()：
          *      1) invokeBeanFactoryPostProcessors(beanFactory):执行所有的BeanFactory后置处理器，包括spring内置的和自定义的。
@@ -26,6 +24,7 @@ public class Test {
          *      将所有的BeanPostProcessor实例化，并放入到BeanFactory的beanPostProcessors的列表中。
          *      最后再重新注册了ApplicationListenerDetector，这样做的目的是为了将ApplicationListenerDetector放入到后置处理器的最末端
          *      3）finishBeanFactoryInitialization(beanFactory):实例化和初始化剩余的非懒加载的单例bean
+         *      在Spring创建Bean的过程中，是先将Bean通过反射创建对象，然后通过BeanPostProcessor来为对象的属性赋值。
          */
         ApplicationContext ac = new AnnotationConfigApplicationContext(SpringConfig.class);
         String[] names = ac.getBeanDefinitionNames();
@@ -33,12 +32,12 @@ public class Test {
             System.out.println(name);
         }
 
-//        System.out.println(ac.getBean("personService"));
-//        System.out.println(ac.getBean("personService"));
-//
-//        SSSSSService sssssService = (SSSSSService) ac.getBean("SSSSSService");
-//        System.out.println(sssssService.personService());
-//        System.out.println(sssssService.personService());
+//        OrderMapper orderMapper = ac.getBean(OrderMapper.class);
+//        System.out.println(orderMapper);
+//        System.out.println(orderMapper.test());
+
+//        System.out.println(ac.getBean("myFactoryBean"));
+//        System.out.println(ac.getBean("&myFactoryBean"));
 
 //        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("spring-config.xml"));
 //        System.out.println("************************************************");
