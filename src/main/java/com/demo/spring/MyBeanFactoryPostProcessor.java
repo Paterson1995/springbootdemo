@@ -20,7 +20,7 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 //        GenericBeanDefinition beanDefinition = (GenericBeanDefinition) configurableListableBeanFactory.getBeanDefinition("myFactoryBean");
 
         //手动注册bean到spring容器
-        configurableListableBeanFactory.registerSingleton("manualOrderService", OrderService.class);
+//        configurableListableBeanFactory.registerSingleton("manualOrderService", OrderService.class);
 
     }
 }

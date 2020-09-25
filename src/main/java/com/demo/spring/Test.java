@@ -17,9 +17,11 @@ public class Test {
          *      1) invokeBeanFactoryPostProcessors(beanFactory):执行所有的BeanFactory后置处理器，包括spring内置的和自定义的。
          *      会先执行实现了BeanDefinitionRegistryPostProcessor接口的类，然后执行BeanFactoryPostProcessor的类
          *      默认情况下，容器中只有一个BeanFactoryPostProcessor,即Spring内置的ConfigurationClassPostProcessor
-         *      ConfigurationClassPostProcessor类的postProcessorBeanFactory()方法进行了
-         *      @Configuration类的解析，@ComponentScan的扫描，以及@Import注解的处理，向容器中添加了ImportAwareBeanPostProcessor
+         *      ConfigurationClassPostProcessor类的postProcessBeanDefinitionRegistry()进行了
+         *      @Configuration类的解析，@ComponentScan的扫描，以及@Import注解的处理，
          *      并将所有交由spring管理的类解析为BeanDefinition，放入到beanFactory的beanDefinitionMap中
+         *      然后执行了postProcessBeanFactory(),这个方法对加了@Configuration注解的类进行CGLIB代理，
+         *      并向容器中添加一个ImportAwareBeanPostProcessor后置处理器
          *      2）registerBeanPostProcessors(beanFactory)：在beanDefinitionMap中找到所有的BeanPostProcessor的BeanDefinition，调用了getBean()方法，
          *      将所有的BeanPostProcessor实例化，并放入到BeanFactory的beanPostProcessors的列表中。
          *      最后再重新注册了ApplicationListenerDetector，这样做的目的是为了将ApplicationListenerDetector放入到后置处理器的最末端
@@ -31,6 +33,8 @@ public class Test {
         for (String name: names) {
             System.out.println(name);
         }
+
+//        ac.getBean(AsyncService.class).test();
 
 //        OrderMapper orderMapper = ac.getBean(OrderMapper.class);
 //        System.out.println(orderMapper);
